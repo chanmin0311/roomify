@@ -2,6 +2,7 @@ import type { Route } from "./+types/home";
 import Navbar from "../../components/Navbar";
 import Upload from "../../components/Upload";
 import { ArrowRight, ArrowUpRight, Clock, Layers } from "lucide-react";
+import { MAX_UPLOAD_SIZE } from "../../lib/constants";
 import Button from "../../components/ui/Button";
 import { useNavigate } from "react-router";
 
@@ -60,7 +61,10 @@ export default function Home() {
               </div>
 
               <h3>Upload your floor plan</h3>
-              <p>Supports JPG, PNG, formats up to 10 MB</p>
+              <p>
+                Supports JPG, PNG formats up to{" "}
+                {MAX_UPLOAD_SIZE / (1024 * 1024)} MB
+              </p>
             </div>
 
             <Upload onComplete={handleUploadComplete} />

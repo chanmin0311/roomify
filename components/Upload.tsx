@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useOutletContext } from "react-router";
 import { UploadIcon, CheckCircle2, ImageIcon } from "lucide-react";
 import {
+  ALLOWED_MIME_TYPES,
+  MAX_UPLOAD_SIZE,
   PROGRESS_INTERVAL_MS,
   PROGRESS_STEP,
   REDIRECT_DELAY_MS,
@@ -21,8 +23,25 @@ const Upload = ({ onComplete }: UploadProps) => {
   const processFile = (file: File) => {
     if (!isSignedIn) return;
 
+    // Validate type and size
+    if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+      console.error("Invalid file type. Please upload a JPG or PNG image.");
+      return;
+    }
+
+    if (file.size > MAX_UPLOAD_SIZE) {
+      console.error(
+        `File too large. Maximum size is ${MAX_UPLOAD_SIZE / (1024 * 1024)} MB.`,
+      );
+      return;
+    }
+
     setFile(file);
     const reader = new FileReader();
+    reader.onerror = () => {
+      setFile(null);
+      setProgress(0);
+    };
 
     reader.onload = () => {
       const base64String = reader.result as string;
@@ -100,7 +119,9 @@ const Upload = ({ onComplete }: UploadProps) => {
                 ? "Click to upload or just drag and drop"
                 : "Sign in or sign up with Puter to upload"}
             </p>
-            <p className="help">Maximum file size 50 MB.</p>
+            <p className="help">
+              Maximum file size {MAX_UPLOAD_SIZE / (1024 * 1024)} MB.
+            </p>
           </div>
         </div>
       ) : (
