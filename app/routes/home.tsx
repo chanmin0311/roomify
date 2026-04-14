@@ -5,6 +5,11 @@ import { ArrowRight, ArrowUpRight, Clock, Layers } from "lucide-react";
 import Button from "../../components/ui/Button";
 import { useNavigate } from "react-router";
 
+/**
+ * Provide metadata for the route.
+ *
+ * @returns An array of route metadata objects containing a `title` and a `description` meta tag.
+ */
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "New React Router App" },
@@ -12,6 +17,13 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+/**
+ * Render the application's Home page including hero, upload, and projects sections and handle upload completion.
+ *
+ * Renders the navbar, hero with CTAs, an upload card wired to the `Upload` component, and a projects grid. When an upload completes, the component generates a timestamp-based id, navigates to `/visualizer/{id}`, and the upload completion handler returns `true`.
+ *
+ * @returns The Home page React element.
+ */
 export default function Home() {
   const navigate = useNavigate();
 
